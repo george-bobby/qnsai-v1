@@ -1,4 +1,8 @@
 #!/bin/bash
 echo "BUILD START"
-python3 -m pip install -r requirements.txt  # Using python3's pip explicitly
+
+# Upgrade pip and install requirements
+python3 -m pip install --upgrade pip
+python3 -m pip install --upgrade -r requirements.txt --disable-pip-version-check --no-cache-dir
+
 echo "BUILD END"
