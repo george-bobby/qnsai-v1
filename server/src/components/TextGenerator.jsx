@@ -1,12 +1,13 @@
 import { useRef, useState } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import Loading_Img from "../assets/1493.gif";
+import Loading_Img from "../assets/loading.gif";
 import { MdContentCopy } from "react-icons/md";
 import { VscRobot } from "react-icons/vsc";
 
 function TextGenerator() {
   const [input, setInput] = useState("");
-  const [questionType, setQuestionType] = useState("");
+  const [questionType, setQuestionType] = useState(""); // State for question type
+  const [numQuestions, setNumQuestions] = useState(5); // State for number of questions
   const [generatedQuestions, setGeneratedQuestions] = useState([]);
   const [loading, setLoading] = useState(false);
   const copyRef = useRef();
@@ -18,11 +19,11 @@ function TextGenerator() {
       setLoading(true);
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-      const prompt = `Generate 5 ${questionType} questions from the following text: "${input}"`;
+      const prompt = `Generate ${numQuestions} ${questionType} questions from the following text: "${input}"`;
       
       const result = await model.generateContent(prompt);
       const response = result.response;
-      const questions = response.text().split("\n").slice(0, 5); // Split the response into 5 questions
+      const questions = response.text().split("\n").slice(0, numQuestions); // Generate the number of questions specified
       
       setInput("");
       setGeneratedQuestions(questions);
@@ -56,13 +57,13 @@ function TextGenerator() {
           </div>
           <div>
             {loading === true ? (
-              <div className="flex items-center justify-center border border-gray-300 rounded-md p-4 w-full h-72 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <div className="flex items-center justify-center border border-gray-300 rounded-md p-4 w-full h-40 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <img src={Loading_Img} alt="Loading" />
               </div>
             ) : (
               <div>
                 <textarea
-                  className="border border-gray-300 rounded-md p-4 w-full h-72 resize-none focus:outline-none focus:ring-2 focus:ring-gray-800"
+                  className="border border-gray-300 rounded-md p-4 w-full h-40 resize-none focus:outline-none focus:ring-2 focus:ring-gray-800"
                   value={generatedQuestions.join("\n")}
                   readOnly
                   placeholder="Generated questions will appear here..."
@@ -74,11 +75,10 @@ function TextGenerator() {
         </div>
 
         <div className="flex flex-col gap-4 pt-4">
-          <input
-            className="border border-gray-300 rounded-md py-2 px-4 w-full focus:outline-none focus:ring-2 focus:ring-gray-800"
+          <textarea
+            className="border border-gray-300 rounded-md py-2 px-4 w-full h-56 resize-none focus:outline-none focus:ring-2 focus:ring-gray-800"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            type="text"
             placeholder="Enter your context..."
             onKeyDown={(e) => {
               if (e.key === "Enter") {
@@ -86,17 +86,29 @@ function TextGenerator() {
               }
             }}
           />
-          
-          <select
-            className="border border-gray-300 rounded-md py-2 px-4 w-full focus:outline-none focus:ring-2 focus:ring-gray-800"
-            value={questionType}
-            onChange={(e) => setQuestionType(e.target.value)}
-          >
-            <option value="" disabled>Select question type</option>
-            <option value="multiple choice">Multiple Choice</option>
-            <option value="true/false">True/False</option>
-            <option value="short answer">Short Answer</option>
-          </select>
+
+          <div className="flex gap-4">
+            <select
+              className="border border-gray-300 rounded-md py-2 px-4 w-1/2 focus:outline-none focus:ring-2 focus:ring-gray-800"
+              value={questionType}
+              onChange={(e) => setQuestionType(e.target.value)}
+            >
+              <option value="" disabled>Select question type</option>
+              <option value="multiple choice">Multiple Choice</option>
+              <option value="true/false">True/False</option>
+              <option value="short answer">Short Answer</option>
+            </select>
+
+            <input
+              className="border border-gray-300 rounded-md py-2 px-4 w-1/2 focus:outline-none focus:ring-2 focus:ring-gray-800"
+              value={numQuestions}
+              onChange={(e) => setNumQuestions(e.target.value)}
+              type="number"
+              min="1"
+              max="20"
+              placeholder="Number of questions"
+            />
+          </div>
 
           <button
             className="ml-2 px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-500 focus:outline-none focus:bg-gray-500"
