@@ -4,7 +4,7 @@ import Loading_Img from "../assets/loading.gif";
 import { MdContentCopy } from "react-icons/md";
 import { VscRobot } from "react-icons/vsc";
 
-function TextGenerator() {
+function QuestionGen() {
   const [input, setInput] = useState("");
   const [questionType, setQuestionType] = useState(""); // State for question type
   const [numQuestions, setNumQuestions] = useState(5); // State for number of questions
@@ -126,4 +126,4 @@ function TextGenerator() {
   );
 }
 
-export default TextGenerator;
+export default QuestionGen;

@@ -1,4 +1,5 @@
-import TextGenerator from "./components/TextGenerator"
+import QuestionGen from "./components/QuestionGen"
+// import TextGen from "./components/TextGen"  
 
 
 function App() {  
@@ -6,7 +7,8 @@ function App() {
 
   return (
     <>
-      <TextGenerator />
+      <QuestionGen />
+      {/* <TextGen /> */}
     </>
   )
 }
