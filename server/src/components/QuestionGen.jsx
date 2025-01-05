@@ -7,7 +7,7 @@ import { VscRobot } from "react-icons/vsc";
 function QuestionGen() {
   const [input, setInput] = useState("");
   const [questionType, setQuestionType] = useState(""); // State for question type
-  const [numQuestions, setNumQuestions] = useState(5); // State for number of questions
+  const [numQuestions, setNumQuestions] = useState(3); // State for number of questions
   const [generatedQuestions, setGeneratedQuestions] = useState([]);
   const [loading, setLoading] = useState(false);
   const copyRef = useRef();
@@ -23,7 +23,8 @@ function QuestionGen() {
       
       const result = await model.generateContent(prompt);
       const response = result.response;
-      const questions = response.text().split("\n").slice(0, numQuestions); // Generate the number of questions specified
+      const questions = response.text().split("\n"); 
+      // const questions = response.text().split("\n").slice(0, numQuestions); 
       
       setInput("");
       setGeneratedQuestions(questions);
